@@ -1,0 +1,18 @@
+trigger:
+- main
+
+pool:
+  name: DevOps-PreProd
+
+steps:
+- task: AWSShellScript@1
+  displayName: AWS S3 Sync
+  inputs: 
+    regionName: us-east-1
+    scriptType: inline
+    inlineScript: |
+      aws s3 sync --dryrun --delete $(Build.Repository.LocalPath)/AP s3://a205451-onvio-glue-prod-ap-southeast-2/Scripts
+      aws s3 sync --dryrun --delete $(Build.Repository.LocalPath)/CA s3://a205451-onvio-glue-prod-ca-central-1/Scripts
+      aws s3 sync --dryrun --delete $(Build.Repository.LocalPath)/SA s3://a205451-onvio-glue-prod-sa-east-1/Scripts
+      aws s3 sync --dryrun --delete $(Build.Repository.LocalPath)/UK s3://a205451-onvio-glue-prod-eu-west-2/Scripts
+      aws s3 sync --dryrun --delete $(Build.Repository.LocalPath)/US s3://a205451-onvio-glue-prod-us-east-1/Scripts
